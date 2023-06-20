@@ -1,0 +1,10 @@
+1) Have you experienced any sudden onset of high fever within the past 7 days?
+2) Are you currently suffering from severe headaches or pain behind the eyes?
+3) Have you noticed any rashes on your skin or experienced itching during the past week?
+4) Have you experienced any joint or muscle pain, or bone pain in the past week?
+5) In the past week, have you experienced any episodes of bleeding, such as nosebleeds, gum bleeding, or easy bruising?
+6) Have you had any recent exposure to mosquitoes or have you traveled to an area where dengue is common?
+7) Have you experienced any severe or persistent abdominal pain or tenderness in the past week?
+8) Have you had any episodes of nausea, vomiting, or loss of appetite in the past week?
+9) Have you noticed any difficulty breathing or rapid breathing during the past 7 days?
+10) Are you currently experiencing any unusual fatigue or irritability?

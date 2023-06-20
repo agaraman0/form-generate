@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question-Answer Form</title>
+</head>
+<body>
+    <h1>Question-Answer Form</h1>
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        {% for field in form %}
+            {% if field.type != 'SubmitField' %}
+                <label for="{{ field.id }}">{{ field.label }}</label>: {{ field() }}<br>
+            {% endif %}
+        {% endfor %}
+        {{ form.submit() }}
+    </form>
+</body>
+</html>
+

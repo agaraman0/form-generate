@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Long API Call Form</title>
+    <style>
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 8px solid #3498db;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        var processButtonClicked = false;
+
+        function processInput() {
+            // Get the user input from the input field
+            var userInput = document.getElementById("inputField").value;
+
+            // Disable the process button
+            document.getElementById("processButton").disabled = true;
+
+            // Set processButtonClicked to true
+            processButtonClicked = true;
+
+            // Display the loader
+            document.getElementById("loader").style.display = "block";
+
+            // Make the API call asynchronously
+            fetch("/process", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ input: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide the loader
+                document.getElementById("loader").style.display = "none";
+
+                // Create an HTML table to display the key-value pairs
+                var table = document.createElement("table");
+                table.classList.add("response-table");
+
+                // Iterate over the key-value pairs and create table rows
+                for (var key in data) {
+                    var row = table.insertRow();
+                    var keyCell = row.insertCell();
+                    var valueCell = row.insertCell();
+
+                    keyCell.textContent = key;
+                    valueCell.textContent = data[key];
+                }
+
+                // Clear the display window
+                var displayWindow = document.getElementById("displayWindow");
+                displayWindow.innerHTML = "";
+
+                // Append the table to the display window
+                displayWindow.appendChild(table);
+
+                // Enable the process button
+                document.getElementById("processButton").disabled = false;
+            })
+            .catch(error => {
+                // Hide the loader
+                document.getElementById("loader").style.display = "none";
+
+                // Handle API call errors
+                document.getElementById("displayWindow").innerHTML = "Error: " + error.message;
+
+                // Enable the process button
+                document.getElementById("processButton").disabled = false;
+            });
+        }
+
+        function redirectToAnotherPage() {
+            if (processButtonClicked) {
+                // Make a GET request to the backend endpoint that returns the static HTML page
+                fetch("/renderForm")
+                    .then(response => response.text())
+                    .then(data => {
+                        // Create a new HTML document with the fetched content
+                        const newDocument = document.implementation.createHTMLDocument();
+                        newDocument.documentElement.innerHTML = data;
+
+                        // Replace the current page with the fetched HTML document
+                        document.open();
+                        document.write(newDocument.documentElement.innerHTML);
+                        document.close();
+                    })
+                    .catch(error => {
+                        // Handle API call errors
+                        console.error("Error: " + error.message);
+                    });
+            } else {
+                // Display a message or perform some action indicating that the "Process API" button needs to be clicked first
+                console.log("Please click the 'Process API' button first.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Long API Call Form</h1>
+
+    <label for="inputField">Input:</label>
+    <input type="text" id="inputField" name="inputField"><br><br>
+
+    <button id="processButton" onclick="processInput()">Process API</button>
+    <button onclick="redirectToAnotherPage()">Generate Form</button><br><br>
+
+    <div id="loader" class="loader" style="display: none;"></div>
+    <div id="displayWindow"></div>
+</body>
+</html>
